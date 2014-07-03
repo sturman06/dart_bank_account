@@ -37,7 +37,7 @@ void main() {
   gender.onChange.listen(wrongGender);
   balance.onChange.listen(nonNegative);
   balance.onBlur.listen(nonNegative);
-  // create the Person and Bank Account objects:
+  // create the Person and Bank Account objects, and store them in local storage:
   btn_create.onClick.listen(storeData);
 }
 
@@ -99,15 +99,15 @@ storeData(Event e) {
   // creating the objects:
   Person p = new Person(name.value, address.value, email.value, gender.value,
       DateTime.parse(birth_date.value));
-  try {
-    BankAccount bac = new BankAccount(p, number.value, double.parse(balance.value),
+  BankAccount bac = new BankAccount(p, number.value, double.parse(balance.value),
       int.parse(pin_code.value));
+  // store data in local storage:
+  try {
     window.localStorage["Bankaccount:${bac.number}"] = bac.toJson();
+    window.alert("Bank account data stored in the browser.");
+  } on Exception catch (ex) {
+    window.alert("Data not stored: Local storage has been deactivated!");
   }
-  catch(e) {
-    window.alert(e.toString());
-  }
- 
 }
 
 
